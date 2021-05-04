@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NUnit.Framework;
 using Shouldly;
 
@@ -11,14 +11,14 @@ namespace EdFi.InterchangeXmlToCsv.Console.UnitTests
         const string ExpectedCsvOutputFolderName = "Expected CSV Output";
         const string ActualCsvOutputFolderName = "Actual CSV Output";
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             DeleteDirectory(ActualCsvOutputFolderName);
             Directory.CreateDirectory(ActualCsvOutputFolderName);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             DeleteDirectory(ActualCsvOutputFolderName);
