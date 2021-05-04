@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using CsvHelper.Configuration;
 using EdFi.SampleDataGenerator.Core.Entities;
@@ -37,7 +37,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
 ,,,,,,,,
 ";
 
-                result.ShouldBe(expectedResult);
+                result.StripLineEndings().ShouldBe(expectedResult.StripLineEndings());
             }
         }
 
@@ -66,7 +66,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
 1,,,,,,,,
 ";
 
-                result.ShouldBe(expectedResult);
+                result.StripLineEndings().ShouldBe(expectedResult.StripLineEndings());
             }
         }
 
@@ -109,7 +109,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
 
                 var result = writer.ToString();
 
-                result.ShouldBe(expectedResult);
+                result.StripLineEndings().ShouldBe(expectedResult.StripLineEndings());
             }
         }
 
