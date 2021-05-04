@@ -21,6 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.EducationOrganizationG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.MasterScheduleGenerator.Console", "Utilities\EdFi.MasterScheduleGenerator.Console\EdFi.MasterScheduleGenerator.Console.csproj", "{4345E8E0-1BB2-4DB3-9CD4-96CCFF53F5D4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Actions", "GitHub Actions", "{8167418A-7DA9-4AE7-AA0D-010F3053D3CC}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build-and-test.yml = ..\.github\workflows\build-and-test.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		ChocoPack|Any CPU = ChocoPack|Any CPU

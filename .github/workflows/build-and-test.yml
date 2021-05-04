@@ -17,8 +17,9 @@ jobs:
   build-and-test:
     name: Build and Run Unit Tests
     runs-on: ubuntu-20.04
-    env:
-      working-directory: ./src
+    defaults:
+      run:
+        working-directory: ./src
     steps:
       - name: Checkout code
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
