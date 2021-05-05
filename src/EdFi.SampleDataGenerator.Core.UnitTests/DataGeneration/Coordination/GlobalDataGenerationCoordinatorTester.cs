@@ -43,6 +43,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.DataGeneration.Coordination
 
             public TInterchangeEntity GetOutput<TInterchangeEntity>(string outputFilePath)
             {
+                _output.Where(x => x.Key == outputFilePath).ShouldHaveSingleItem(outputFilePath);
                 return (TInterchangeEntity)_output.Single(x => x.Key == outputFilePath).Value;
             }
 
@@ -53,6 +54,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.DataGeneration.Coordination
 
             public Manifest GetManifest(string outputFilePath)
             {
+                _manifests.Where(x => x.Key == outputFilePath).ShouldHaveSingleItem(outputFilePath);
                 return _manifests.Single(x => x.Key == outputFilePath).Value;
             }
         }
