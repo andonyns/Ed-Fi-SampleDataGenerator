@@ -29,7 +29,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
             using (var writer = new StringWriter())
             {
                 var sut = new InterchangeCsvWriter(map, writer);
-                sut.WriteRecords(new []{entityToWrite});
+                sut.WriteRecords(new[] { entityToWrite });
 
                 var result = writer.ToString();
 
@@ -105,7 +105,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
             using (var writer = new StringWriter())
             {
                 var sut = new InterchangeCsvWriter(map, writer);
-                sut.WriteRecords(new [] {record, otherRecord});
+                sut.WriteRecords(new[] { record, otherRecord });
 
                 var result = writer.ToString();
 
@@ -140,7 +140,8 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
                 }
             };
             var expectedResult =
-                $"id,SessionName,SchoolYear,BeginDate,EndDate,TotalInstructionalDays,Term,id,ref,SchoolId,id,ref,GradingPeriod,PeriodSequence,SchoolYear,id,ref,SchoolId\r\n,,2017-2018,6/13/2018 12:00:00 AM,1/1/0001 12:00:00 AM,0,,,,,1,1,,,,,,\r\n";
+                $"id,SessionName,SchoolYear,BeginDate,EndDate,TotalInstructionalDays,Term,id,ref,SchoolId,id,ref,GradingPeriod,PeriodSequence,SchoolYear,id,ref,SchoolId" +
+                Environment.NewLine + ",,2017-2018,6/13/2018 12:00:00 AM,1/1/0001 12:00:00 AM,0,,,,,1,1,,,,,," + Environment.NewLine;
 
             var map = new SessionCsvClassMap();
             using (var writer = new StringWriter())
@@ -159,16 +160,17 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.Serialization.CsvHelper
 
             var calendar = new CalendarDate
             {
-                 CalendarEvent = new []
+                CalendarEvent = new[]
                  {
                      "Instructional day"
                  },
-                 Date = new DateTime(2018,6,13),
-                 id = "1"
+                Date = new DateTime(2018, 6, 13),
+                id = "1"
             };
 
             var expectedResult =
-                "id,CalendarEvent,Date,id,ref,CalendarCode,SchoolYear,id,ref,SchoolId\r\n1,Instructional day,6/13/2018 12:00:00 AM,,,,,,,\r\n";
+                "id,CalendarEvent,Date,id,ref,CalendarCode,SchoolYear,id,ref,SchoolId" + Environment.NewLine +
+                "1,Instructional day,6/13/2018 12:00:00 AM,,,,,,," + Environment.NewLine;
 
             var map = new CalendarDateCsvClassMap();
             using (var writer = new StringWriter())
