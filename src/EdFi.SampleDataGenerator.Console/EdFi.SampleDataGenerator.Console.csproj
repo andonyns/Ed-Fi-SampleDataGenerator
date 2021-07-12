@@ -134,6 +134,7 @@
     <Compile Include="Config\StudentProfile.cs" />
     <Compile Include="Config\SurnameFileMapping.cs" />
     <Compile Include="Config\TimeConfig.cs" />
+    <Compile Include="Entities\Demographics.cs" />
     <Compile Include="Entities\District.cs" />
     <Compile Include="Entities\School.cs" />
     <Compile Include="Program.cs" />
