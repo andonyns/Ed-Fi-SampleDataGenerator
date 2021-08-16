@@ -29,9 +29,9 @@ namespace EdFi.SampleDataGenerator.Console
 
                 var commandLineConfig = ParseCommandLine(args);
 
-                if (commandLineConfig.UseNCESDatabase)
+                if (!string.IsNullOrEmpty(commandLineConfig.NCESDatabasePath))
                 {
-                    BuildXmlConfigFromDb();
+                    BuildXmlConfigFromDb(commandLineConfig.NCESDatabasePath);
                     commandLineConfig.ConfigXmlPath = XmlTemplateHelper.WriteFilePath;
                 }
 
@@ -51,7 +51,7 @@ namespace EdFi.SampleDataGenerator.Console
 #endif
         }
 
-        private static void BuildXmlConfigFromDb()
+        private static void BuildXmlConfigFromDb(string dbPath)
         {
             var invalidGradeLevels = new List<string> { "Grade 1", "Grade 2", "Grade 3" };
             var invalidEthnicities = new List<string> { "No Category Codes", "Not Specified" };
@@ -69,7 +69,7 @@ namespace EdFi.SampleDataGenerator.Console
 
                 SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder
                 {
-                    DataSource = @".\Samples\SampleDataGenerator\DataFiles\nces-2019.db",
+                    DataSource = dbPath,
                     Pooling = true,
                     BusyTimeout = 10
                 };

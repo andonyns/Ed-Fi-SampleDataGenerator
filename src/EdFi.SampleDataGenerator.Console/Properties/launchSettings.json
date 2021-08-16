@@ -1,8 +1,7 @@
 {
   "profiles": {
     "EdFi.SampleDataGenerator.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "-c=Z:\\Edwire\\mainconsoleappedfi\\Ed-Fi-SampleDataGenerator\\NewGeneratedConfig.xml -w -u"
+      "commandName": "Project"
     }
   }
 }
