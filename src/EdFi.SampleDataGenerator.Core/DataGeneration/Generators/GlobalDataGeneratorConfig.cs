@@ -212,9 +212,6 @@ namespace EdFi.SampleDataGenerator.Core.DataGeneration.Generators
 
                     var academicSubjectCount = coursesForSchool.Select(c => c.AcademicSubject).Distinct().Count();
 
-                    if (academicSubjectCount < 8)
-                        System.Console.WriteLine("Test, remove me plz");
-
                     propertyValidatorContext.MessageFormatter
                         .AppendArgument("SchoolId", school.SchoolId)
                         .AppendArgument("AcademicSubjectCount", academicSubjectCount)

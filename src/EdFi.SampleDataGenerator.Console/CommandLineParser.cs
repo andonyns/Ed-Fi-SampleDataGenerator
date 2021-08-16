@@ -22,7 +22,7 @@ namespace EdFi.SampleDataGenerator.Console
             Setup(a => a.DataFilePath)
                 .As('d', "dataFilePath")
                 .WithDescription("Path to directory containing input CSV data files")
-                .SetDefault(".\\Samples\\SampleDataGenerator\\DataFiles\\");
+                .SetDefault(".\\DataFiles\\");
 
             Setup(a => a.OutputPath)
                 .As('o', "outputPath")
