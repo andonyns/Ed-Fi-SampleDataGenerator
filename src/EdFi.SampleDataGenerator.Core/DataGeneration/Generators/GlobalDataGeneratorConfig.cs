@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using EdFi.SampleDataGenerator.Core.Config;
@@ -211,6 +211,9 @@ namespace EdFi.SampleDataGenerator.Core.DataGeneration.Generators
                         .Where(c => c.EducationOrganizationReference.ReferencesSchool(school.SchoolId) && c.OfferedGradeLevel.Contains(gradeLevel.GetStructuredCodeValue()));
 
                     var academicSubjectCount = coursesForSchool.Select(c => c.AcademicSubject).Distinct().Count();
+
+                    if (academicSubjectCount < 8)
+                        System.Console.WriteLine("Test, remove me plz");
 
                     propertyValidatorContext.MessageFormatter
                         .AppendArgument("SchoolId", school.SchoolId)

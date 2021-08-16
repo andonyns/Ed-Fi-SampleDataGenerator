@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using EdFi.SampleDataGenerator.Core.DataGeneration.Generators;
 using EdFi.SampleDataGenerator.Core.Entities;
 using System.Linq;
