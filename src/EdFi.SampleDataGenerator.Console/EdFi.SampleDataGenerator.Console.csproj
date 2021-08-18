@@ -26,12 +26,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildProjectDirectory)\..\..\eng\CopyOutputForChocolatey.targets" />
   <ItemGroup>
-    <None Remove="XMLTemplates\EndStudentProfileConfigTemplate.txt" />
-    <None Remove="XMLTemplates\StartStudentProfileEconomicTemplate.txt" />
-    <None Remove="XMLTemplates\StartStudentProfileHomelessTemplate.txt" />
-    <None Remove="XMLTemplates\StudentProfileEthnicityOptionValue.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="3.0.0-beta7" />
     <PackageReference Include="FluentCommandLineParser" Version="1.4.3" />
     <PackageReference Include="FluentValidation" Version="6.2.1.0" />
@@ -673,6 +667,9 @@
     <Content Include="Samples\SampleDataGenerator\ChangeQueryConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Samples\SampleDataGenerator\NCESBlankConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Samples\SampleDataGenerator\NorthridgeConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -682,7 +679,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Samples\SampleDataGenerator\DataFiles\nces-2019.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="XMLTemplates\Grade10ConfigTemplate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
