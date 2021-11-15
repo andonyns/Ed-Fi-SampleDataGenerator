@@ -64,18 +64,18 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
             {
                 fullFileString += ReadFile(SchoolStart)
                     .Replace("{{school.name}}", school.Name)
-                    .Replace("{{school.id}}", school.ID);
+                    .Replace("{{school.id}}", school.Id);
 
                 foreach(var grade in school.GradeLevels) // Format expected for grades : Grade 1, Grade 2, Grade 3.....
                 {
                     fullFileString += ReadGradeFile(GetIntFromGrade(grade.Grade))
                         .Replace("{{grade.students}}", grade.TotalStudents.ToString())
-                        .Replace("{{grade.profile}}", $"{school.ID}{grade.Grade}")
+                        .Replace("{{grade.profile}}", $"{school.Id}{grade.Grade}")
                         .Replace("{{grade.transfersIn}}", $"{Decimal.ToInt32(Math.Ceiling(grade.TotalStudents * 0.05m))}")
                         .Replace("{{grade.transfersOut}}", $"{Decimal.ToInt32(Math.Ceiling(grade.TotalStudents * 0.02m))}");
 
                     studentProfilesString += ReadFile(StartStudentProfile)
-                        .Replace("{{profile.name}}", $"{school.ID}{grade.Grade}");
+                        .Replace("{{profile.name}}", $"{school.Id}{grade.Grade}");
 
                     var currentTotalPercentage = 0m;
                     foreach (var race in ValidEthnicitiesRaces.Where(x => x != "White"))

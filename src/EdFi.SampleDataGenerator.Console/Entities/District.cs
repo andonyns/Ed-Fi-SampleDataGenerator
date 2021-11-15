@@ -8,7 +8,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities
         {
             Schools = new List<School>();
         }
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string State { get; set; }

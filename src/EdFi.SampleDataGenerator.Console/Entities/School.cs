@@ -8,7 +8,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities
         {
             GradeLevels = new List<GradeLevel>();
         }
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -16,7 +16,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities
         public string PostalCode { get; set; }
         public string AreaCode { get; set; }
         public string Level { get; set; }
-        public string LeaID { get; set; }
+        public string LeaId { get; set; }
         public List<GradeLevel> GradeLevels { get; set; }
     }
 }

@@ -1,18 +1,10 @@
 using CsvHelper.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 {
     public class ClassPeriod
     {
-        public ClassPeriod()
-        {
-
-        }
         public string ClassPeriodName { get; set; }
         public string SchoolId { get; set; }
         public string SchoolLink { get; set; }

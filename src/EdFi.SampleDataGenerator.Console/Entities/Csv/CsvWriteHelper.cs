@@ -43,8 +43,8 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
             if (districtRecord != null)
             {
-                districtRecord.Rating = ratings[random.Next(0, ratings.Count())];
-                districtRecord.EducationOrganizationIdentityId = district.ID;
+                districtRecord.Rating = ratings[random.Next(0, ratings.Length)];
+                districtRecord.EducationOrganizationIdentityId = district.Id;
 
                 resultRecords.Add(districtRecord);
             }
@@ -54,8 +54,8 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                 var newSchoolRecord = records.FirstOrDefault();
 
                 if (newSchoolRecord == null) continue;
-                newSchoolRecord.Rating = ratings[random.Next(0, ratings.Count())];
-                newSchoolRecord.EducationOrganizationIdentityId = school.ID;
+                newSchoolRecord.Rating = ratings[random.Next(0, ratings.Length)];
+                newSchoolRecord.EducationOrganizationIdentityId = school.Id;
 
                 resultRecords.Add(newSchoolRecord);
             }
@@ -72,10 +72,10 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             {
                 for (int i = 1; i <= 8; i++)
                 {
-                    resultRecords.Add(new ClassPeriod()
+                    resultRecords.Add(new ClassPeriod
                     {
                         ClassPeriodName = $"0{i} - Traditional",
-                        SchoolIdentityId = school.ID
+                        SchoolIdentityId = school.Id
                     });
                 }
             }
@@ -137,7 +137,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                     {
                         var newCourseRecord = new Course()
                         {
-                            Id = course.Id.Replace("SchoolId", school.ID),
+                            Id = course.Id.Replace("SchoolId", school.Id),
                             CompetencyLevel = course.CompetencyLevel,
                             CourseDescription = course.CourseDescription,
                             CourseCode = course.CourseCode,
@@ -145,7 +145,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                             CourseIdentificationSystem = course.CourseIdentificationSystem,
                             CourseTitle = course.CourseTitle,
                             CourseIdentificationCode = course.CourseIdentificationCode,
-                            EducationOrganizationIdentityId = school.ID,
+                            EducationOrganizationIdentityId = school.Id,
                             LearningStandardIdentityId = course.LearningStandardIdentityId,
                             OfferedGradeLevel = $"uri://ed-fi.org/GradeLevelDescriptor#{gradeLevel.GradeLevel}",
                             AcademicSubject = course.AcademicSubject
@@ -162,13 +162,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                                 CourseIdentityCourseCode = course.CourseCode,
                                 CourseLookupCourseCode = course.CourseCode,
                                 CourseLookupIdentificationCode = course.CourseCode,
-                                CourseIdentityEducationOrganizationIdentityId = school.ID,
+                                CourseIdentityEducationOrganizationIdentityId = school.Id,
                                 CourseLookupIdentificationSystem = courseOffering?.CourseLookupIdentificationSystem,
-                                SchoolIdentityId = school.ID,
-                                SessionIdentitySchoolIdentityId = school.ID,
+                                SchoolIdentityId = school.Id,
+                                SessionIdentitySchoolIdentityId = school.Id,
                                 SessionIdentitySchoolYear = courseOffering?.SessionIdentitySchoolYear,
                                 SessionIdentitySessionName = st.SessionName,
-                                SessionLookupSchoolIdentityId = school.ID,
+                                SessionLookupSchoolIdentityId = school.Id,
                                 SessionLookupSessionName = st.SessionName,
                                 SessionLookupTerm = st.Term
                             };
@@ -185,26 +185,26 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                                 {
                                     AvailableCreditsCredits1 = section?.AvailableCreditsCredits1,
                                     ClassPeriodIdentityClassPeriodName = $"0{i} - Traditional",
-                                    ClassPeriodIdentitySchoolId = school.ID,
-                                    ClassPeriodIdentitySchoolIdentityId = school.ID,
+                                    ClassPeriodIdentitySchoolId = school.Id,
+                                    ClassPeriodIdentitySchoolIdentityId = school.Id,
                                     CourseOfferingIdentityLocalCourseCode = course.CourseCode,
-                                    CourseOfferingIdentitySessionIdentitySchoolIdentityId = school.ID,
+                                    CourseOfferingIdentitySessionIdentitySchoolIdentityId = school.Id,
                                     CourseOfferingIdentitySessionIdentitySchoolYear = section?.CourseOfferingIdentitySessionIdentitySchoolYear,
                                     CourseOfferingIdentitySessionIdentitySessionName = st.SessionName,
-                                    CourseOfferingIdentitySessionLookupSchoolIdentityId = school.ID,
+                                    CourseOfferingIdentitySessionLookupSchoolIdentityId = school.Id,
                                     CourseOfferingIdentitySessionLookupSessionName = st.SessionName,
                                     CourseOfferingIdentitySessionLookupTerm = st.Term,
-                                    CourseOfferingidentitySchoolIdentityId = school.ID,
+                                    CourseOfferingIdentitySchoolIdentityId = school.Id,
                                     EducationalEnvironment = section?.EducationalEnvironment,
                                     InstructionLanguage = section?.InstructionLanguage,
                                     LocationIdentityClassroomIdentificationCode = section?.LocationIdentityClassroomIdentificationCode,
-                                    LocationIdentitySchoolIdentityId = school.ID,
-                                    LocationSchoolIdentityId = school.ID,
-                                    ProgramIdentityEducationOrganizationIdentityId = district.ID,
+                                    LocationIdentitySchoolIdentityId = school.Id,
+                                    LocationSchoolIdentityId = school.Id,
+                                    ProgramIdentityEducationOrganizationIdentityId = district.Id,
                                     ProgramIdentityProgramName = section?.ProgramIdentityProgramName,
                                     ProgramIdentityProgramType = section?.ProgramIdentityProgramType,
-                                    SectionIdentifier = section.SectionIdentifier.Replace(section.SectionIdentifier.Split('-')[0], $"{school.ID}_0{i}"),
-                                    SequenceOfCourse = section.SequenceOfCourse
+                                    SectionIdentifier = section?.SectionIdentifier.Replace(section.SectionIdentifier.Split('-')[0], $"{school.Id}_0{i}"),
+                                    SequenceOfCourse = section?.SequenceOfCourse
                                 };
 
                                 sectionResultRecords.Add(newSection);
@@ -248,14 +248,14 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             foreach (var record in resultRecords)
             {
                 record.City = district.City;
-                record.EducationOrganizationIdentificationCode = district.ID;
-                record.Id = $"LEAG_{district.ID}";
-                record.LocalEducationAgencyId = district.ID;
+                record.EducationOrganizationIdentificationCode = district.Id;
+                record.Id = $"LEAG_{district.Id}";
+                record.LocalEducationAgencyId = district.Id;
                 record.NameOfCounty = district.State;
                 record.NameOfInstitution = district.Name;
                 record.PostalCode = district.PostalCode;
                 record.ShortNameOfInstitution = district.Name.Substring(5); // Question: Logic for this?
-                record.StateOrganizationId = district.ID;
+                record.StateOrganizationId = district.Id;
                 record.TelephoneNumber = "(832) 356-8309"; // TODO: Add real data
                 record.StreetNumberName = "8996 Spruce Avenue"; // TODO: Add real data
             }
@@ -272,11 +272,11 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             {
                 resultRecords.AddRange(records.Select(x => new Location
                 {
-                    Id = $"LOCN_{school.ID}-{x.ClassroomIdentificationCode}",
+                    Id = $"LOCN_{school.Id}-{x.ClassroomIdentificationCode}",
                     ClassroomIdentificationCode = x.ClassroomIdentificationCode,
                     MaximumNumberOfSeats = x.MaximumNumberOfSeats,
                     OptimalNumberOfSeats = x.OptimalNumberOfSeats,
-                    SchoolIdentityId = school.ID
+                    SchoolIdentityId = school.Id
                 }));
             }
 
@@ -290,9 +290,9 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             foreach (var record in resultRecords)
             {
                 var programId = record.ProgramId.Split('_')[1];
-                record.EducationOrganizationIdentityId = district.ID;
-                record.Id = $"PRGM_{district.ID}_{programId}";
-                record.ProgramId = $"{district.ID}_{programId}";
+                record.EducationOrganizationIdentityId = district.Id;
+                record.Id = $"PRGM_{district.Id}_{programId}";
+                record.ProgramId = $"{district.Id}_{programId}";
             }
 
             EducationOrganization.Program.WriteFile(resultRecords);
@@ -308,16 +308,16 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
                 if (defaultRecord == null) continue;
                 defaultRecord.City = school.City;
-                defaultRecord.EducationOrganizationIdentificationCode = school.ID;
+                defaultRecord.EducationOrganizationIdentificationCode = school.Id;
                 // defaultRecord.GradeLevel = ""; not sure how to overwrite this
-                defaultRecord.Id = $"SCOL_{school.ID}";
-                defaultRecord.LocalEducationAgencyIdentityId = district.ID;
+                defaultRecord.Id = $"SCOL_{school.Id}";
+                defaultRecord.LocalEducationAgencyIdentityId = district.Id;
                 defaultRecord.NameOfCounty = school.State;
                 defaultRecord.NameOfInstitution = school.Name;
                 defaultRecord.PostalCode = school.PostalCode;
-                defaultRecord.SchoolId = school.ID;
+                defaultRecord.SchoolId = school.Id;
                 defaultRecord.ShortNameOfInstitution = school.Name.Substring(5); // Question: Logic for this?
-                defaultRecord.StateOrganizationId = school.ID;
+                defaultRecord.StateOrganizationId = school.Id;
                 defaultRecord.TelephoneNumber = "(832) 356-8309"; // TODO: Add real data
                 defaultRecord.StreetNumberName = "8996 Spruce Avenue"; // TODO: Add real data
                 // TODO: defaultRecord.WebSite add read data
@@ -334,11 +334,11 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             foreach (var school in district.Schools)
             {
                 resultRecords.Add(new Calendar {
-                    Id = $"CAL_{school.ID}_Item20162017",
+                    Id = $"CAL_{school.Id}_Item20162017",
                     CalendarCode = "Calendar Code",
                     SchoolYear = "2016-2017",
                     CalendarType = "uri://ed-fi.org/CalendarTypeDescriptor#IEP",
-                    SchoolIdentityId = school.ID
+                    SchoolIdentityId = school.Id
                 });
             }
 
@@ -356,8 +356,8 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                     CalendarCode  = x.CalendarCode,
                     CalendarEvent = x.CalendarEvent,
                     Date = x.Date,
-                    Id = x.Id.Replace("255901001",  school.ID),
-                    SchoolIdentityId = school.ID,
+                    Id = x.Id.Replace("255901001",  school.Id),
+                    SchoolIdentityId = school.Id,
                     SchoolYear = x.SchoolYear
                 }));
             }
@@ -379,8 +379,8 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                     PeriodSequence = x.PeriodSequence,
                     GradingPeriod1 = x.GradingPeriod1,
                     EndDate = x.EndDate,
-                    Id = x.Id.Replace("255901001", school.ID),
-                    SchoolIdentityId = school.ID,
+                    Id = x.Id.Replace("255901001", school.Id),
+                    SchoolIdentityId = school.Id,
                     SchoolYear = x.SchoolYear
                 }));
             }
@@ -402,13 +402,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                     SessionName = x.SessionName,
                     Term = x.Term,
                     EndDate = x.EndDate,
-                    Id = x.Id.Replace("255901001", school.ID),
-                    SchoolIdentityId = school.ID,
+                    Id = x.Id.Replace("255901001", school.Id),
+                    SchoolIdentityId = school.Id,
                     SchoolYear = x.SchoolYear,
                     GradingPeriodIdentityGradingPeriod = x.GradingPeriodIdentityGradingPeriod,
                     GradingPeriodIdentityPeriodSequence = x.GradingPeriodIdentityPeriodSequence,
                     GradingPeriodIdentitySchoolYear = x.GradingPeriodIdentitySchoolYear,
-                    GradingPeriodIdentitySchoolId = school.ID,
+                    GradingPeriodIdentitySchoolId = school.Id,
                 }));
             }
 

@@ -8,7 +8,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities
         {
             Ethnicities = new List<Ethnicity>();
         }
-        public string SchoolID { get; set; }
+        public string SchoolId { get; set; }
         public string Grade { get; set; }
         public List<Ethnicity> Ethnicities { get; set; }
         public long TotalStudents { get; set; }

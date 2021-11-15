@@ -32,20 +32,20 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 
         public static List<EducationServiceCenter> ReadFile()
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
-            return CsvHelper.MapCsvToEntity<EducationServiceCenter, EducationSericeCenterMap>(path);
+            var path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
+            return CsvHelper.MapCsvToEntity<EducationServiceCenter, EducationServiceCenterMap>(path);
         }
 
         public static void WriteFile(List<EducationServiceCenter> records)
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
-            CsvHelper.WriteCsv<EducationServiceCenter, EducationSericeCenterMap>(path, records);
+            var path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
+            CsvHelper.WriteCsv<EducationServiceCenter, EducationServiceCenterMap>(path, records);
         }
     }
 
-    public class EducationSericeCenterMap : CsvClassMap<EducationServiceCenter>
+    public class EducationServiceCenterMap : CsvClassMap<EducationServiceCenter>
     {
-        public EducationSericeCenterMap()
+        public EducationServiceCenterMap()
         {
             Map(m => m.Id).Name("id");
             Map(m => m.NameOfInstitution).Name("NameOfInstitution");
