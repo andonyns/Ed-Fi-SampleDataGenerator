@@ -53,13 +53,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
 
         public static List<Section> ReadFile()
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
             return CsvHelper.MapCsvToEntity<Section, SectionMap>(path);
         }
 
         public static void WriteFile(List<Section> records)
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
             CsvHelper.WriteCsv<Section, SectionMap>(path, records);
         }
     }

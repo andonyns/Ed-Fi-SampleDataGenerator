@@ -10,10 +10,10 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
     public static class CsvWriteHelper
     {
         public const string DefaultDistrictId = "255901";
-        public static List<string> DefaultHighschoolIds  = new List<string>() { "255901001"}; // Grades 9-12
-        public static List<string> DefaultJuniorHighschoolIds = new List<string>() { "255901002", "255901003" }; // Grades 7 and 8
-        public static List<string> DefaultMiddleschoolIds = new List<string>() { "255901004", "255901005" }; // Grades 4-6
-        public static List<SessionTerm> DefaultSessionNames = new List<SessionTerm>() {
+        public static List<string> DefaultHighSchoolIds  = new List<string> { "255901001"}; // Grades 9-12
+        public static List<string> DefaultJuniorHighSchoolIds = new List<string> { "255901002", "255901003" }; // Grades 7 and 8
+        public static List<string> DefaultMiddleSchoolIds = new List<string> { "255901004", "255901005" }; // Grades 4-6
+        public static List<SessionTerm> DefaultSessionNames = new List<SessionTerm> {
             new SessionTerm("2016 - 2017 Fall Semester", "uri://ed-fi.org/TermDescriptor#Fall Semester"),
             new SessionTerm("2016 - 2017 Spring Semester","uri://ed-fi.org/TermDescriptor#Spring Semester")
              };
@@ -36,20 +36,24 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             var records = AccountabilityRating.ReadFile();
             var resultRecords = new List<AccountabilityRating>();
 
-            Random random = new Random();
+            var random = new Random();
 
             var ratings = records.GroupBy(x => x.Rating).Select(g => g.Key).ToArray();
             var districtRecord = records.FirstOrDefault();
 
-            districtRecord.Rating = ratings[random.Next(0, ratings.Count())];
-            districtRecord.EducationOrganizationIdentityId = district.ID;
+            if (districtRecord != null)
+            {
+                districtRecord.Rating = ratings[random.Next(0, ratings.Count())];
+                districtRecord.EducationOrganizationIdentityId = district.ID;
 
-            resultRecords.Add(districtRecord);
+                resultRecords.Add(districtRecord);
+            }
 
             foreach (var school in district.Schools)
             {
                 var newSchoolRecord = records.FirstOrDefault();
 
+                if (newSchoolRecord == null) continue;
                 newSchoolRecord.Rating = ratings[random.Next(0, ratings.Count())];
                 newSchoolRecord.EducationOrganizationIdentityId = school.ID;
 
@@ -101,21 +105,21 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                         c.CourseLevelCharacteristic,
                         c.CourseIdentificationSystem,
                         c.CourseTitle,
-                        c.CouseIdentificationCode,
+                        c.CourseIdentificationCode,
                         c.LearningStandardIdentityId,
                         c.AcademicSubject
                     })
                     .Select(c => new {
                         Id = $"CRSE_SchoolId_{c.Key.CourseCode}",
-                        CompetencyLevel = c.Key.CompetencyLevel,
-                        CourseDescription = c.Key.CourseDescription,
-                        CourseCode = c.Key.CourseCode,
-                        CourseLevelCharacteristic = c.Key.CourseLevelCharacteristic,
-                        CourseIdentificationSystem = c.Key.CourseIdentificationSystem,
-                        CourseTitle = c.Key.CourseTitle,
-                        CouseIdentificationCode = c.Key.CouseIdentificationCode,
-                        LearningStandardIdentityId = c.Key.LearningStandardIdentityId,
-                        AcademicSubject = c.Key.AcademicSubject
+                        c.Key.CompetencyLevel,
+                        c.Key.CourseDescription,
+                        c.Key.CourseCode,
+                        c.Key.CourseLevelCharacteristic,
+                        c.Key.CourseIdentificationSystem,
+                        c.Key.CourseTitle,
+                        c.Key.CourseIdentificationCode,
+                        c.Key.LearningStandardIdentityId,
+                        c.Key.AcademicSubject
                     }).ToList()
                 }).ToList();
 
@@ -125,7 +129,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                 {
                     // Identify matching gradelevel and apply all possible courses
                     var currentGl = gl.Grade.GetGradeLevelFromDb();
-                    var gradeLevel = gradeLevels.FirstOrDefault(x => x.GradeLevel.GetGradeLevelFromCsv() == currentGl); ;
+                    var gradeLevel = gradeLevels.FirstOrDefault(x => x.GradeLevel.GetGradeLevelFromCsv() == currentGl);
 
                     if (gradeLevel == null) continue; // they don't exist in the current data
 
@@ -140,7 +144,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                             CourseLevelCharacteristic = course.CourseLevelCharacteristic,
                             CourseIdentificationSystem = course.CourseIdentificationSystem,
                             CourseTitle = course.CourseTitle,
-                            CouseIdentificationCode = course.CouseIdentificationCode,
+                            CourseIdentificationCode = course.CourseIdentificationCode,
                             EducationOrganizationIdentityId = school.ID,
                             LearningStandardIdentityId = course.LearningStandardIdentityId,
                             OfferedGradeLevel = $"uri://ed-fi.org/GradeLevelDescriptor#{gradeLevel.GradeLevel}",
@@ -164,7 +168,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                                 SessionIdentitySchoolIdentityId = school.ID,
                                 SessionIdentitySchoolYear = courseOffering?.SessionIdentitySchoolYear,
                                 SessionIdentitySessionName = st.SessionName,
-                                SessionLookupSchooIdentityId = school.ID,
+                                SessionLookupSchoolIdentityId = school.ID,
                                 SessionLookupSessionName = st.SessionName,
                                 SessionLookupTerm = st.Term
                             };
@@ -177,7 +181,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                         {
                             for (int i = 1; i <= 8; i++)
                             {
-                                var newSection = new Section()
+                                var newSection = new Section
                                 {
                                     AvailableCreditsCredits1 = section?.AvailableCreditsCredits1,
                                     ClassPeriodIdentityClassPeriodName = $"0{i} - Traditional",
@@ -302,6 +306,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
             {
                 var defaultRecord = EducationOrganization.School.ReadFile().FirstOrDefault();
 
+                if (defaultRecord == null) continue;
                 defaultRecord.City = school.City;
                 defaultRecord.EducationOrganizationIdentificationCode = school.ID;
                 // defaultRecord.GradeLevel = ""; not sure how to overwrite this
@@ -311,7 +316,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
                 defaultRecord.NameOfInstitution = school.Name;
                 defaultRecord.PostalCode = school.PostalCode;
                 defaultRecord.SchoolId = school.ID;
-                defaultRecord.ShortNameOfInstitution = school.Name.Substring(5);  // Question: Logic for this?
+                defaultRecord.ShortNameOfInstitution = school.Name.Substring(5); // Question: Logic for this?
                 defaultRecord.StateOrganizationId = school.ID;
                 defaultRecord.TelephoneNumber = "(832) 356-8309"; // TODO: Add real data
                 defaultRecord.StreetNumberName = "8996 Spruce Avenue"; // TODO: Add real data
@@ -342,7 +347,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
         public static void ModifyCalendarDate(District district)
         {
-            var records = CalendarDate.ReadFile().Where(x => x.SchoolIdentityId == "255901001");
+            var records = CalendarDate.ReadFile().Where(x => x.SchoolIdentityId == "255901001").ToList();
             var resultRecords = new List<CalendarDate>();
 
             foreach (var school in district.Schools)
@@ -362,7 +367,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
         public static void ModifyGradingPeriod(District district)
         {
-            var records = GradingPeriod.ReadFile().Where(x => x.SchoolIdentityId == "255901001");
+            var records = GradingPeriod.ReadFile().Where(x => x.SchoolIdentityId == "255901001").ToList();
             var resultRecords = new List<GradingPeriod>();
 
             foreach (var school in district.Schools)
@@ -385,7 +390,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
         public static void ModifySession(District district)
         {
-            var records = Session.ReadFile().Where(x => x.SchoolIdentityId == "255901001");
+            var records = Session.ReadFile().Where(x => x.SchoolIdentityId == "255901001").ToList();
             var resultRecords = new List<Session>();
 
             foreach (var school in district.Schools)
@@ -409,11 +414,6 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
 
             Session.WriteFile(resultRecords);
         }
-
-        private static bool IsDistrict(this string value) => value == DefaultDistrictId;
-        private static bool IsHighschool(this string value) => DefaultHighschoolIds.Contains(value);
-        private static bool IsJuniorHighschool(this string value) => DefaultJuniorHighschoolIds.Contains(value);
-        private static bool IsMiddleschool(this string value) => DefaultMiddleschoolIds.Contains(value);
 
         private static int GetGradeLevelFromDb(this string value) => Int32.Parse(value.Trim().Split(' ')[1]);
         private static int GetGradeLevelFromCsv(this string value)

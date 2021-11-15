@@ -23,11 +23,11 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
         public string SessionLookupTerm { get; set; }
         public string SessionLookupSchoolId { get; set; }
         public string SessionLookupSchoolLink { get; set; }
-        public string SessionLookupSchooIdentityId { get; set; }
+        public string SessionLookupSchoolIdentityId { get; set; }
         public string CourseId { get; set; }
         public string CourseLink { get; set; }
         public string CourseIdentityCourseCode { get; set; }
-        public string CourseIdentityEducationOrganizationid { get; set; }
+        public string CourseIdentityEducationOrganizationId { get; set; }
         public string CourseIdentityEducationOrganizationLink { get; set; }
         public string CourseIdentityEducationOrganizationIdentityId { get; set; }
         public string CourseLookupCourseCode { get; set; }
@@ -71,11 +71,11 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
             Map(m => m.SessionLookupTerm).Name("SessionReference.SessionLookup.Term");
             Map(m => m.SessionLookupSchoolId).Name("SessionReference.SessionLookup.SchoolReference.id");
             Map(m => m.SessionLookupSchoolLink).Name("SessionReference.SessionLookup.SchoolReference.ref");
-            Map(m => m.SessionLookupSchooIdentityId).Name("SessionReference.SessionLookup.SchoolReference.SchoolIdentity.SchoolId");
+            Map(m => m.SessionLookupSchoolIdentityId).Name("SessionReference.SessionLookup.SchoolReference.SchoolIdentity.SchoolId");
             Map(m => m.CourseId).Name("CourseReference.id");
             Map(m => m.CourseLink).Name("CourseReference.ref");
             Map(m => m.CourseIdentityCourseCode).Name("CourseReference.CourseIdentity.CourseCode");
-            Map(m => m.CourseIdentityEducationOrganizationid).Name("CourseReference.CourseIdentity.EducationOrganizationReference.id");
+            Map(m => m.CourseIdentityEducationOrganizationId).Name("CourseReference.CourseIdentity.EducationOrganizationReference.id");
             Map(m => m.CourseIdentityEducationOrganizationLink).Name("CourseReference.CourseIdentity.EducationOrganizationReference.ref");
             Map(m => m.CourseIdentityEducationOrganizationIdentityId).Name("CourseReference.CourseIdentity.EducationOrganizationReference.EducationOrganizationIdentity.EducationOrganizationId");
             Map(m => m.CourseLookupCourseCode).Name("CourseReference.CourseLookup.CourseCode");

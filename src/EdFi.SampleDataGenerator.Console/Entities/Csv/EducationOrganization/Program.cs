@@ -1,9 +1,5 @@
 using CsvHelper.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 {
@@ -20,13 +16,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 
         public static List<Program> ReadFile()
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.ProgramPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.ProgramPath}";
             return CsvHelper.MapCsvToEntity<Program, ProgramMap>(path);
         }
 
         public static void WriteFile(List<Program> records)
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.ProgramPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.ProgramPath}";
             CsvHelper.WriteCsv<Program, ProgramMap>(path, records);
         }
     }
@@ -44,6 +40,5 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
             Map(x => x.EducationOrganizationLink).Name("EducationOrganizationReference.ref");
             Map(x => x.EducationOrganizationIdentityId).Name("EducationOrganizationReference.EducationOrganizationIdentity.EducationOrganizationId");
         }
-        
     }
 }
