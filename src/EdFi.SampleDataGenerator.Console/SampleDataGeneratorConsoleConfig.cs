@@ -1,4 +1,4 @@
-﻿using EdFi.SampleDataGenerator.Core.DataGeneration.Common;
+using EdFi.SampleDataGenerator.Core.DataGeneration.Common;
 
 namespace EdFi.SampleDataGenerator.Console
 {
@@ -11,5 +11,6 @@ namespace EdFi.SampleDataGenerator.Console
         public OutputMode OutputMode { get; set; }
         public bool AllowOverwrite { get; set; }
         public bool CreatePerformanceFile { get; set; }
+        public string NCESDatabasePath { get; set; }
     }
 }

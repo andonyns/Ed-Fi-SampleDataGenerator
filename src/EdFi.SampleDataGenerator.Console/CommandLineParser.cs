@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using EdFi.SampleDataGenerator.Core.DataGeneration.Common;
 using Fclp;
 
@@ -47,6 +47,11 @@ namespace EdFi.SampleDataGenerator.Console
                 .As('p', "createPerformanceFile")
                 .WithDescription("Useful for debugging, this enables the output of each student's performance index.")
                 .SetDefault(false);
+
+            Setup(a => a.NCESDatabasePath)
+                .As('u', "useNCESDatabase")
+                .WithDescription("Activates logic to generate the xml config through the NCES Database file.")
+                .SetDefault(string.Empty);
         }
     }
 }
