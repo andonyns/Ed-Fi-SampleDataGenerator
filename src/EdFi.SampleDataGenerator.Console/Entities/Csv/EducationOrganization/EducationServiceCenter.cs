@@ -1,5 +1,4 @@
 using CsvHelper.Configuration;
-using System.Collections.Generic;
 
 namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 {
@@ -29,18 +28,6 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
         public string StateEducationAgencyId { get; set; }
         public string StateEducationAgencyLink { get; set; }
         public string StateEducationAgencyIdentityId { get; set; }
-
-        public static List<EducationServiceCenter> ReadFile()
-        {
-            var path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
-            return CsvHelper.MapCsvToEntity<EducationServiceCenter, EducationServiceCenterMap>(path);
-        }
-
-        public static void WriteFile(List<EducationServiceCenter> records)
-        {
-            var path = $"{CsvHelper.BasePath}{CsvHelper.EducationServiceCenterPath}";
-            CsvHelper.WriteCsv<EducationServiceCenter, EducationServiceCenterMap>(path, records);
-        }
     }
 
     public class EducationServiceCenterMap : CsvClassMap<EducationServiceCenter>
