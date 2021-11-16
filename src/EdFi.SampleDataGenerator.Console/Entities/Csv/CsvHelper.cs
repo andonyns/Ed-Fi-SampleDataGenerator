@@ -1,7 +1,6 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -30,22 +29,22 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv
         public const string CourseOfferingPath = @"MasterSchedule\CourseOffering.csv";
         public const string SectionPath = @"MasterSchedule\Section.csv";
 
-        public static List<T> MapCsvToEntity<T,U>(string path) where U : CsvClassMap<T>
+        public static List<T> MapCsvToEntity<T,TU>(string path) where TU : CsvClassMap<T>
         {
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader))
             {
-                csv.Configuration.RegisterClassMap<U>();
+                csv.Configuration.RegisterClassMap<TU>();
                 return csv.GetRecords<T>().ToList();
             }
         }
 
-        public static void WriteCsv<T,U>(string path, List<T> records) where U : CsvClassMap<T>
+        public static void WriteCsv<T,TU>(string path, List<T> records) where TU : CsvClassMap<T>
         {
             using (var writer = new StreamWriter(path))
             using (var csv = new CsvWriter(writer))
             {
-                csv.Configuration.RegisterClassMap<U>();
+                csv.Configuration.RegisterClassMap<TU>();
                 csv.WriteRecords(records);
             }
         }

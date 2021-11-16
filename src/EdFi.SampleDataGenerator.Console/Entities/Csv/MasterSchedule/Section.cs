@@ -28,13 +28,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
         public string CourseOfferingIdentitySessionLookupSchoolId { get; set; }
         public string CourseOfferingIdentitySessionLookupSchoolLink { get; set; }
         public string CourseOfferingIdentitySessionLookupSchoolIdentityId { get; set; }
-        public string CourseOfferingidentitySchoolId { get; set; }
-        public string CourseOfferingidentitySchoolLink { get; set; }
-        public string CourseOfferingidentitySchoolIdentityId { get; set; }
+        public string CourseOfferingIdentitySchoolId { get; set; }
+        public string CourseOfferingIdentitySchoolLink { get; set; }
+        public string CourseOfferingIdentitySchoolIdentityId { get; set; }
         public string LocationSchoolId { get; set; }
         public string LocationSchoolLink { get; set; }
         public string LocationSchoolIdentityId { get; set; }
-        public string Locationid { get; set; }
+        public string LocationId { get; set; }
         public string LocationIdentityClassroomIdentificationCode { get; set; }
         public string LocationIdentitySchoolId { get; set; }
         public string LocationIdentitySchoolLink { get; set; }
@@ -53,13 +53,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
 
         public static List<Section> ReadFile()
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
             return CsvHelper.MapCsvToEntity<Section, SectionMap>(path);
         }
 
         public static void WriteFile(List<Section> records)
         {
-            string path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
+            var path = $"{CsvHelper.BasePath}{CsvHelper.SectionPath}";
             CsvHelper.WriteCsv<Section, SectionMap>(path, records);
         }
     }
@@ -91,13 +91,13 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.MasterSchedule
             Map(m => m.CourseOfferingIdentitySessionLookupSchoolId).Name("CourseOfferingReference.CourseOfferingIdentity.SessionReference.SessionLookup.SchoolReference.id");
             Map(m => m.CourseOfferingIdentitySessionLookupSchoolLink).Name("CourseOfferingReference.CourseOfferingIdentity.SessionReference.SessionLookup.SchoolReference.ref");
             Map(m => m.CourseOfferingIdentitySessionLookupSchoolIdentityId).Name("CourseOfferingReference.CourseOfferingIdentity.SessionReference.SessionLookup.SchoolReference.SchoolIdentity.SchoolId");
-            Map(m => m.CourseOfferingidentitySchoolId).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.id");
-            Map(m => m.CourseOfferingidentitySchoolLink).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.ref");
-            Map(m => m.CourseOfferingidentitySchoolIdentityId).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.SchoolIdentity.SchoolId");
+            Map(m => m.CourseOfferingIdentitySchoolId).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.id");
+            Map(m => m.CourseOfferingIdentitySchoolLink).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.ref");
+            Map(m => m.CourseOfferingIdentitySchoolIdentityId).Name("CourseOfferingReference.CourseOfferingIdentity.SchoolReference.SchoolIdentity.SchoolId");
             Map(m => m.LocationSchoolId).Name("LocationSchoolReference.id");
             Map(m => m.LocationSchoolLink).Name("LocationSchoolReference.ref");
             Map(m => m.LocationSchoolIdentityId).Name("LocationSchoolReference.SchoolIdentity.SchoolId");
-            Map(m => m.Locationid).Name("LocationReference.id");
+            Map(m => m.LocationId).Name("LocationReference.id");
             Map(m => m.LocationIdentityClassroomIdentificationCode).Name("LocationReference.LocationIdentity.ClassroomIdentificationCode");
             Map(m => m.LocationIdentitySchoolId).Name("LocationReference.LocationIdentity.SchoolReference.id");
             Map(m => m.LocationIdentitySchoolLink).Name("LocationReference.LocationIdentity.SchoolReference.ref");

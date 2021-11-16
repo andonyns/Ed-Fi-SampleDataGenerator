@@ -1,9 +1,5 @@
 using CsvHelper.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
 {
@@ -21,7 +17,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
         public string AcademicSubject { get; set; }
         public string OfferedGradeLevel { get; set; }
         public string AssigningOrganizationIdentificationCode { get; set; }
-        public string CouseIdentificationCode { get; set; }
+        public string CourseIdentificationCode { get; set; }
         public string CourseIdentificationSystem { get; set; }
         public string EducationOrganizationId { get; set; }
         public string EducationOrganizationLink { get; set; }
@@ -68,7 +64,7 @@ namespace EdFi.SampleDataGenerator.Console.Entities.Csv.EducationOrganization
             Map(m => m.AcademicSubject).Name("AcademicSubject");
             Map(m => m.OfferedGradeLevel).Name("OfferedGradeLevel");
             Map(m => m.AssigningOrganizationIdentificationCode).Name("CourseIdentificationCode.AssigningOrganizationIdentificationCode");
-            Map(m => m.CouseIdentificationCode).Name("CourseIdentificationCode.IdentificationCode");
+            Map(m => m.CourseIdentificationCode).Name("CourseIdentificationCode.IdentificationCode");
             Map(m => m.CourseIdentificationSystem).Name("CourseIdentificationCode.CourseIdentificationSystem");
             Map(m => m.EducationOrganizationId).Name("EducationOrganizationReference.id");
             Map(m => m.EducationOrganizationLink).Name("EducationOrganizationReference.ref");

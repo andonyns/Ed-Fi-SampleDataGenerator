@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
 {
     public static class XmlTemplateHelper
     {
-        public static List<string> ValidEthnicitiesRaces = new List<string> { "Hispanic", "Asian", "Black", "AmericanIndianAlaskanNative", "NativeHawaiinPacificIslander", "White" };
+        public static List<string> ValidEthnicitiesRaces = new List<string> { "Hispanic", "Asian", "Black", "AmericanIndianAlaskanNative", "NativeHawaiianPacificIslander", "White" };
         public const string BasePath = @".\XMLTemplates\";
         public const string WriteFilePath = @".\Samples\SampleDataGenerator\NewGeneratedConfig.xml";
 
@@ -48,7 +49,7 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
         public const string Grade12File = "Grade12ConfigTemplate.txt";
 
         public static void BuildConfigFile(Entities.District district) {
-            string fullFileString = "";
+            var fullFileString = "";
             fullFileString += ReadFile(ConfigStart);
             fullFileString += ReadFile(DistrictStart)
                 .Replace("{{district.name}}", district.Name)
@@ -63,18 +64,18 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
             {
                 fullFileString += ReadFile(SchoolStart)
                     .Replace("{{school.name}}", school.Name)
-                    .Replace("{{school.id}}", school.ID);
+                    .Replace("{{school.id}}", school.Id);
 
                 foreach(var grade in school.GradeLevels) // Format expected for grades : Grade 1, Grade 2, Grade 3.....
                 {
                     fullFileString += ReadGradeFile(GetIntFromGrade(grade.Grade))
                         .Replace("{{grade.students}}", grade.TotalStudents.ToString())
-                        .Replace("{{grade.profile}}", $"{school.ID}{grade.Grade}")
-                        .Replace("{{grade.transfersIn}}", $"{Decimal.ToInt32(Math.Ceiling((decimal)grade.TotalStudents * 0.05m))}")
-                        .Replace("{{grade.transfersOut}}", $"{Decimal.ToInt32(Math.Ceiling((decimal)grade.TotalStudents * 0.02m))}");
+                        .Replace("{{grade.profile}}", $"{school.Id}{grade.Grade}")
+                        .Replace("{{grade.transfersIn}}", $"{Decimal.ToInt32(Math.Ceiling(grade.TotalStudents * 0.05m))}")
+                        .Replace("{{grade.transfersOut}}", $"{Decimal.ToInt32(Math.Ceiling(grade.TotalStudents * 0.02m))}");
 
                     studentProfilesString += ReadFile(StartStudentProfile)
-                        .Replace("{{profile.name}}", $"{school.ID}{grade.Grade}");
+                        .Replace("{{profile.name}}", $"{school.Id}{grade.Grade}");
 
                     var currentTotalPercentage = 0m;
                     foreach (var race in ValidEthnicitiesRaces.Where(x => x != "White"))
@@ -86,25 +87,25 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
 
                         studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
                                 .Replace("{{option.name}}", race)
-                                .Replace("{{option.value}}", percentage.ToString());
+                                .Replace("{{option.value}}", percentage.ToString(CultureInfo.InvariantCulture));
 
                         currentTotalPercentage += percentage;
                     }
-                    decimal whitePercentage = 1.0m - currentTotalPercentage;
+                    var whitePercentage = 1.0m - currentTotalPercentage;
 
                     studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
                         .Replace("{{option.name}}", "White")
-                            .Replace("{{option.value}}", whitePercentage.ToString());
+                            .Replace("{{option.value}}", whitePercentage.ToString(CultureInfo.InvariantCulture));
 
 
                     var maleCount = grade.Ethnicities.Where(x => x.Sex == "Male").Sum(x => x.StudentCount);
-                    decimal malePercentage = Math.Round((decimal)maleCount / grade.TotalStudents, 2);
-                    decimal femalePercentage = 1 - malePercentage;
+                    var malePercentage = Math.Round((decimal)maleCount / grade.TotalStudents, 2);
+                    var femalePercentage = 1 - malePercentage;
 
                     studentProfilesString += ReadFile(StartStudentProfileEconomic)
                         .Replace("{{profile.male}}", $"{malePercentage}")
                         .Replace("{{profile.female}}", $"{femalePercentage}");
-                    Random random = new Random();
+                    var random = new Random();
                     
                     foreach (var race in ValidEthnicitiesRaces)
                     {
@@ -121,7 +122,7 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
                     {
                         studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
                                 .Replace("{{option.name}}", race)
-                                .Replace("{{option.value}}", $"0.01");
+                                .Replace("{{option.value}}", "0.01");
                     }
 
                     studentProfilesString += ReadFile(EndStudentProfile);
@@ -140,11 +141,11 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
             {
                 File.WriteAllText(WriteFilePath, fullFileString);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                System.Console.WriteLine("En error ocurred while writing the config file.");
+                System.Console.WriteLine("En error occurred while writing the config file.");
 
-                throw e;
+                throw;
             }
         }
 
@@ -154,10 +155,10 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
             {
                 return Int32.Parse(gradeName.Trim().Split(' ')[1]);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 System.Console.WriteLine("The grade isn't in the expected format please review your data. Expected format: 'Grade #'.");
-                throw e;
+                throw;
             }
         }
 
@@ -200,11 +201,11 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
             {
                 return File.ReadAllText($"{BasePath}{fileName}");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 System.Console.WriteLine($"There was a issue while reading the file: {fileName}");
 
-                throw e;
+                throw;
             }
         }
 

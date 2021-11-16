@@ -12,5 +12,14 @@ namespace EdFi.SampleDataGenerator.Console
         public bool AllowOverwrite { get; set; }
         public bool CreatePerformanceFile { get; set; }
         public string NCESDatabasePath { get; set; }
+        public string NCESDistrictId { get; set; }
+        public ConfigurationType ConfigurationType { get; set; }
+
+    }
+
+    public enum ConfigurationType
+    {
+        ConfigurationFile,
+        Database,
     }
 }

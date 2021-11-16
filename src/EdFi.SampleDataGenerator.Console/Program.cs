@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Globalization;
 using EdFi.SampleDataGenerator.Console.Config;
 using EdFi.SampleDataGenerator.Console.Entities.Csv;
 using EdFi.SampleDataGenerator.Console.XMLTemplates;
@@ -29,9 +28,10 @@ namespace EdFi.SampleDataGenerator.Console
 
                 var commandLineConfig = ParseCommandLine(args);
 
-                if (!string.IsNullOrEmpty(commandLineConfig.NCESDatabasePath))
+                if (commandLineConfig.ConfigurationType == ConfigurationType.Database &&
+                    !string.IsNullOrEmpty(commandLineConfig.NCESDatabasePath) && !string.IsNullOrEmpty(commandLineConfig.NCESDistrictId))
                 {
-                    BuildXmlConfigFromDb(commandLineConfig.NCESDatabasePath);
+                    BuildXmlConfigFromDb(commandLineConfig.NCESDatabasePath, commandLineConfig.NCESDistrictId);
                     commandLineConfig.ConfigXmlPath = XmlTemplateHelper.WriteFilePath;
                 }
 
@@ -51,7 +51,7 @@ namespace EdFi.SampleDataGenerator.Console
 #endif
         }
 
-        private static void BuildXmlConfigFromDb(string dbPath)
+        private static void BuildXmlConfigFromDb(string dbPath, string districtId)
         {
             var invalidGradeLevels = new List<string> { "Grade 1", "Grade 2", "Grade 3" };
             var invalidEthnicities = new List<string> { "No Category Codes", "Not Specified" };
@@ -59,31 +59,23 @@ namespace EdFi.SampleDataGenerator.Console
 
             try
             {
-                System.Console.WriteLine("Please enter a NCES District ID and hit ENTER: ");  //4808940 = Austin ISD
-                string districtID = System.Console.ReadLine();
-
-                System.Console.WriteLine(); System.Console.WriteLine(); System.Console.WriteLine();
-
-                System.Console.WriteLine("Reading district...");
-
-
                 SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder
                 {
                     DataSource = dbPath,
                     Pooling = true,
                     BusyTimeout = 10
                 };
-                SQLiteConnection sqliteConnection = new SQLiteConnection(builder.ToString());
+                var sqliteConnection = new SQLiteConnection(builder.ToString());
                 sqliteConnection.Open();
-                SQLiteCommand sqliteCommand = new SQLiteCommand(String.Format("SELECT * FROM lea WHERE LEAID='{0}';", districtID), sqliteConnection);
-                SQLiteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
+                var sqliteCommand = new SQLiteCommand($"SELECT * FROM lea WHERE LEAID='{districtId}';", sqliteConnection);
+                var sqliteDataReader = sqliteCommand.ExecuteReader();
 
-                Entities.District district = new Entities.District();
+                var district = new Entities.District();
 
                 if (sqliteDataReader.Read())
                 {
                     district.Name = sqliteDataReader["LEA_NAME"].ToString();
-                    district.ID = sqliteDataReader["LEAID"].ToString();
+                    district.Id = sqliteDataReader["LEAID"].ToString();
                     district.City = sqliteDataReader["LCITY"].ToString();
                     district.StateAbr = sqliteDataReader["LSTATE"].ToString();
                     district.State = sqliteDataReader["STATENAME"].ToString();
@@ -96,21 +88,23 @@ namespace EdFi.SampleDataGenerator.Console
                 System.Console.WriteLine("Reading schools...");
 
 
-                sqliteCommand = new SQLiteCommand(String.Format("SELECT * FROM school WHERE LEAID='{0}';", districtID), sqliteConnection);
+                sqliteCommand = new SQLiteCommand($"SELECT * FROM school WHERE LEAID='{districtId}';", sqliteConnection);
                 sqliteDataReader = sqliteCommand.ExecuteReader();
-                string[] row = { };
                 while (sqliteDataReader.Read())
                 {
-                    Entities.School school = new Entities.School();
-                    school.ID = sqliteDataReader["SCHID"].ToString();
-                    school.Name = sqliteDataReader["SCH_NAME"].ToString().Replace("(","").Replace(")", "").Replace("'","").Replace("&","");
-                    school.Level = sqliteDataReader["LEVEL"].ToString();
-                    school.City = sqliteDataReader["LCITY"].ToString();
-                    school.StateAbr = sqliteDataReader["LSTATE"].ToString();
-                    school.State = sqliteDataReader["STATENAME"].ToString();
-                    school.PostalCode = sqliteDataReader["LZIP"].ToString();
-                    school.AreaCode = sqliteDataReader["PHONE"].ToString().Substring(1, 3);
-                    school.LeaID = sqliteDataReader["LEAID"].ToString().Substring(1, 3);
+                    Entities.School school = new Entities.School
+                    {
+                        Id = sqliteDataReader["SCHID"].ToString(),
+                        Name = sqliteDataReader["SCH_NAME"].ToString().Replace("(", "").Replace(")", "")
+                            .Replace("'", "").Replace("&", ""),
+                        Level = sqliteDataReader["LEVEL"].ToString(),
+                        City = sqliteDataReader["LCITY"].ToString(),
+                        StateAbr = sqliteDataReader["LSTATE"].ToString(),
+                        State = sqliteDataReader["STATENAME"].ToString(),
+                        PostalCode = sqliteDataReader["LZIP"].ToString(),
+                        AreaCode = sqliteDataReader["PHONE"].ToString().Substring(1, 3),
+                        LeaId = sqliteDataReader["LEAID"].ToString().Substring(1, 3)
+                    };
 
                     district.Schools.Add(school);
                 }
@@ -121,7 +115,8 @@ namespace EdFi.SampleDataGenerator.Console
                 foreach (var school in district.Schools)
                 {
                     // The query is only accepting Grades 1-12
-                    sqliteCommand = new SQLiteCommand(String.Format("select Grade,RACE_ETHNICITY,SEX, sum(STUDENT_COUNT) as Students from school_student where Grade like '%Grade %' and SCHID = '{0}' group by GRADE, RACE_ETHNICITY, SEX having Students > 0;", school.ID), sqliteConnection);
+                    sqliteCommand = new SQLiteCommand(
+                        $"select Grade,RACE_ETHNICITY,SEX, sum(STUDENT_COUNT) as Students from school_student where Grade like '%Grade %' and SCHID = '{school.Id}' group by GRADE, RACE_ETHNICITY, SEX having Students > 0;", sqliteConnection);
                     sqliteDataReader = sqliteCommand.ExecuteReader();
 
                     while (sqliteDataReader.Read())
@@ -145,7 +140,7 @@ namespace EdFi.SampleDataGenerator.Console
                         .Select(g => new Entities.GradeLevel
                         {
                             Grade = g.Key,
-                            SchoolID = school.ID,
+                            SchoolId = school.Id,
                             TotalStudents = g.Sum(x => x.StudentCount),
                             Ethnicities = g.GroupBy(e => new { e.Name, e.Grade, e.Sex })
                             .Select(e => new Entities.Ethnicity {
@@ -160,7 +155,7 @@ namespace EdFi.SampleDataGenerator.Console
                 // A School must have a valid grade level
                 district.Schools = district.Schools.Where(s => s.GradeLevels.Any()).ToList();
 
-                if (district.Schools.Count() == 0)
+                if (!district.Schools.Any())
                     throw new Exception("There is missing data or gradelevels on all district schools.");
 
                 System.Console.WriteLine("Writing File...");
@@ -195,7 +190,7 @@ namespace EdFi.SampleDataGenerator.Console
                 case "Hispanic/Latino":
                     return "Hispanic";
                 case "Native Hawaiian or Other Pacific Islander":
-                    return "NativeHawaiinPacificIslander";
+                    return "NativeHawaiianPacificIslander";
                 case "White":
                 case "Two or more races":
                         return "White";
@@ -253,21 +248,6 @@ namespace EdFi.SampleDataGenerator.Console
             }
         }
 
-        // Method to convert common prefixes into full wording
-        private static string Schoolifier(string schoolName)
-        {
-            if (schoolName.Substring(schoolName.Length - 3, 3) == " EL") return schoolName.Substring(1, schoolName.Length - 3) + "ELEMENTARY SCHOOL";
-            if (schoolName.Substring(schoolName.Length - 4, 4) == " M S") return schoolName.Substring(1, schoolName.Length - 4) + "MIDDLE SCHOOL";
-            if (schoolName.Substring(schoolName.Length - 4, 4) == " H S") return schoolName.Substring(1, schoolName.Length - 4) + "HIGH SCHOOL";
-            return schoolName;
-        }
-
-        private static string TitleCase(string name)
-        {
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            return textInfo.ToTitleCase(name);
-        }
-
         private static SampleDataGeneratorConfig LoadXmlConfig(SampleDataGeneratorConsoleConfig commandLineConfig)
         {
             try
@@ -295,7 +275,7 @@ namespace EdFi.SampleDataGenerator.Console
             }
             catch (Exception e)
             {
-                throw new Exception("Error when trying to create configration", e);
+                throw new Exception("Error when trying to create configuration", e);
             }
         }
 
