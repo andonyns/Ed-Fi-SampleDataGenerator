@@ -82,15 +82,15 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
                     {
                         var count = grade.Ethnicities.Where(x => x.Name == race).Sum(x => x.StudentCount);
                         var percentage = Math.Round((decimal)count / grade.TotalStudents, 2);
-
-                        if (percentage == 0) percentage = 0.1m;
-
-                        studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
-                                .Replace("{{option.name}}", race)
-                                .Replace("{{option.value}}", percentage.ToString(CultureInfo.InvariantCulture));
-
-                        currentTotalPercentage += percentage;
+                        if (percentage > 0.0m)
+                        {
+                            studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
+                                    .Replace("{{option.name}}", race)
+                                    .Replace("{{option.value}}", percentage.ToString(CultureInfo.InvariantCulture));
+                            currentTotalPercentage += percentage;
+                        }                     
                     }
+
                     var whitePercentage = 1.0m - currentTotalPercentage;
 
                     studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
