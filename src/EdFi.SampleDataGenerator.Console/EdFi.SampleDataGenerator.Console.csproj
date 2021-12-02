@@ -611,12 +611,6 @@
     <None Include="Samples\SampleDataGenerator\DataFiles\FirstName-Hispanic-Male.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Samples\SampleDataGenerator\DataFiles\FirstName-NativeHawaiinPacificIslander-Female.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Samples\SampleDataGenerator\DataFiles\FirstName-NativeHawaiinPacificIslander-Male.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Samples\SampleDataGenerator\DataFiles\FirstName-White-Female.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -651,9 +645,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Samples\SampleDataGenerator\DataFiles\Surname-Multi.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Samples\SampleDataGenerator\DataFiles\Surname-NativeHawaiinPacificIslander.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Samples\SampleDataGenerator\DataFiles\Surname-White.csv">
@@ -744,5 +735,16 @@
     <Content Include="XMLTemplates\StartStudentProfileConfigTemplate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Samples\SampleDataGenerator\DataFiles\FirstName-NativeHawaiianPacificIslander-Female.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\SampleDataGenerator\DataFiles\FirstName-NativeHawaiianPacificIslander-Male.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\SampleDataGenerator\DataFiles\Surname-NativeHawaiianPacificIslander.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
