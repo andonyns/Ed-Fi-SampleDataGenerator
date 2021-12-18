@@ -23,6 +23,7 @@ namespace EdFi.SampleDataGenerator.Core.Helpers
                     + section.SectionIdentifier
                     + section.CourseOfferingReference.CourseOfferingIdentity.SessionReference.SessionIdentity.SessionName
                     + section.SequenceOfCourse
+                    + section.LocationReference.LocationIdentity.ClassroomIdentificationCode
                     ).GetHashCode();
         }
 
