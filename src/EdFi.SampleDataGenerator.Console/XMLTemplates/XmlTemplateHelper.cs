@@ -77,21 +77,41 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
                     studentProfilesString += ReadFile(StartStudentProfile)
                         .Replace("{{profile.name}}", $"{school.Id}{grade.Grade}");
 
-                    var currentTotalPercentage = 0m;
+                    var racePercentages = new Dictionary<string, decimal>();
                     foreach (var race in ValidEthnicitiesRaces.Where(x => x != "White"))
                     {
                         var count = grade.Ethnicities.Where(x => x.Name == race).Sum(x => x.StudentCount);
                         var percentage = Math.Round((decimal)count / grade.TotalStudents, 2);
-                        if (percentage > 0.0m)
+
+                        if (percentage > 0)
                         {
-                            studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
-                                    .Replace("{{option.name}}", race)
-                                    .Replace("{{option.value}}", percentage.ToString(CultureInfo.InvariantCulture));
-                            currentTotalPercentage += percentage;
-                        }                     
+                            racePercentages.Add(race, percentage);
+                        }
+                    }
+                    
+                    var currentTotalPercentage = racePercentages.Values.Sum();
+                    if (currentTotalPercentage >= 1.0m)
+                    {
+                        const decimal expectedTotalRacePercentage = 0.95m;
+                        var desiredPercentage = expectedTotalRacePercentage / currentTotalPercentage;
+                        var races = new List<string>(racePercentages.Keys);
+                        foreach (var race in races)
+                        {
+                            var actualValue = racePercentages[race];
+                            var adjustedValue = actualValue * desiredPercentage;
+                            racePercentages[race] = adjustedValue;
+                        }
+                        currentTotalPercentage = racePercentages.Values.Sum();
                     }
 
                     var whitePercentage = 1.0m - currentTotalPercentage;
+
+                    foreach (var racePercentage in racePercentages)
+                    {
+                        studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
+                                .Replace("{{option.name}}", racePercentage.Key)
+                                .Replace("{{option.value}}", racePercentage.Value.ToString(CultureInfo.InvariantCulture));
+                    }
 
                     studentProfilesString += ReadFile(StudentProfileEthnicityOptionValue)
                         .Replace("{{option.name}}", "White")
@@ -100,6 +120,7 @@ namespace EdFi.SampleDataGenerator.Console.XMLTemplates
 
                     var maleCount = grade.Ethnicities.Where(x => x.Sex == "Male").Sum(x => x.StudentCount);
                     var malePercentage = Math.Round((decimal)maleCount / grade.TotalStudents, 2);
+                    malePercentage = malePercentage >= 1 ? 0.95m : malePercentage == 0.0m ? 0.05m : malePercentage;
                     var femalePercentage = 1 - malePercentage;
 
                     studentProfilesString += ReadFile(StartStudentProfileEconomic)
