@@ -111,9 +111,10 @@ namespace EdFi.SampleDataGenerator.Console
 
                 System.Console.WriteLine("Reading grades and students...");
 
-                var ethnicities = new List<Entities.Ethnicity>();
                 foreach (var school in district.Schools)
                 {
+                    var ethnicities = new List<Entities.Ethnicity>();
+
                     // The query is only accepting Grades 1-12
                     sqliteCommand = new SQLiteCommand(
                         $"select Grade,RACE_ETHNICITY,SEX, sum(STUDENT_COUNT) as Students from school_student where Grade like '%Grade %' and SCHID = '{school.Id}' group by GRADE, RACE_ETHNICITY, SEX having Students > 0;", sqliteConnection);
