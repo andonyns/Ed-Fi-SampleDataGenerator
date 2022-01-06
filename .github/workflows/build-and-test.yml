@@ -10,8 +10,8 @@ on:
   pull_request:
 
 jobs:
-  build:
-
+  build-test:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     defaults:
@@ -28,13 +28,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./src
-    steps:
     - name: Run unit tests
       run: dotnet test
