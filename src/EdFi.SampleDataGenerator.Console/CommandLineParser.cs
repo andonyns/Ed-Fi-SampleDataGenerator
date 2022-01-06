@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using EdFi.SampleDataGenerator.Core.DataGeneration.Common;
 using Fclp;
 
