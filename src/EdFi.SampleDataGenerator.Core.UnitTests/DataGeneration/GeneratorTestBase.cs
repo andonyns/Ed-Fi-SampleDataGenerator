@@ -162,7 +162,7 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.DataGeneration
             {
                 BatchSize = null,
                 DataFilePath = Path.Combine(AssemblyDirectory, "DataFiles"),
-                OutputPath = $".{Path.DirectorySeparatorChar}",
+                OutputPath = GetPath(""),
                 SeedFilePath = null,
                 OutputMode = OutputMode.Standard,
                 TimeConfig = TestTimeConfig.Default,
@@ -216,6 +216,9 @@ namespace EdFi.SampleDataGenerator.Core.UnitTests.DataGeneration
             return TestGradeProfile.Default;
         }
 
+        public static string GetPath(string FileName) {
+                return $".{Path.DirectorySeparatorChar}{FileName}";
+        }
 
         public static NameFileData GetNameFileData()
         {
